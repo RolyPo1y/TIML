@@ -3,6 +3,9 @@ An implementation for our paper: Temporal Information-aware Multimodal Learning 
 
 ## 1. Environment
 - Pytorch: 1.12.1
+- numpy: 1.26.4
+- pandas: 2.2.2
+- tqdm: 4.66.2
 - CUDA version: 11.3
 - GPU: NVIDIA GeForce RTX 4060 Ti 16GB
 
