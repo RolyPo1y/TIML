@@ -142,6 +142,10 @@ class SocialEncoder(nn.Module):
 
 class AttentionLayer(nn.Module):
     def __init__(self, hidden_dim):
+        """
+        Args:
+            hidden_dim: The output dimension of HPSFE
+        """
         super(AttentionLayer, self).__init__()
         self.w_p = nn.Linear(hidden_dim, hidden_dim)
         self.b_p = nn.Parameter(torch.zeros(hidden_dim))
@@ -289,7 +293,7 @@ class TFS(nn.Module):
         # For each feature (such as visual, audio, text, etc.), calculate its attention score with the t_p
         features = [visual_input, acoustic_input, textual_input, metadata_input, social_input, temporal_features]
 
-        # 计算注意力权重
+        # Calculate attention weights
         attention_scores = []
         for feature in features:
             a_z = self.q_z(torch.tanh(self.w_z(feature) + self.v_z(t_p_features) + self.b_z))
