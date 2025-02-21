@@ -53,7 +53,8 @@ def train(model, train_dataloader, val_dataloader, criterion, optimizer, device,
         model.train()
         all_outputs = []
         all_targets = []
-
+        
+        # Training
         for batch in tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{epochs} - Training", unit="batch"):
             # Extract features and labels
             multimodal_features = batch[0]
@@ -131,11 +132,11 @@ def train(model, train_dataloader, val_dataloader, criterion, optimizer, device,
             f"Epoch {epoch + 1}/{epochs}, Validation Loss: {val_epoch_loss:.4f}, MAE: {val_epoch_mae:.4f}, "
             f"Spearman: {val_epoch_spearman:.4f}, R-squared: {val_epoch_r_square:.4f}")
 
-        # 保存目前val_loss最低的模型权重
+        # Save the model checkpoints with the lowest current val_loss
         if val_epoch_loss < best_val_mse:
             best_val_mse = val_epoch_loss
-            patience_counter = 0  # Reset counter when improvement is found
-            best_model_path = f'E:\\超参数实验checkpoint\\model_{fold}.pth'
+            patience_counter = 0  # Reset the counter when a lower val_epoch_loss is detected
+            best_model_path = f'...\\model_{fold}.pth'
             torch.save(model.state_dict(), best_model_path)
         else:
             patience_counter += 1
@@ -146,8 +147,7 @@ def train(model, train_dataloader, val_dataloader, criterion, optimizer, device,
         # plot_results(train_spearmans, val_spearmans, 'Spearman', save_path=None)
         # plot_results(train_r_squares, val_r_squares, 'R-Square', save_path=None)
 
-        # 记录并保存训练过程中的指标
-        results_path = f'C:\\Users\\Administrator\\Desktop\\program\\视频流行度预测模型\\使用ln计算标签\\超参数实验\\TIML\\train_result\\training_results_{fold}.csv'
+        results_path = f'...\\TIML\\train_result\\training_results_{fold}.csv'
         with open(results_path, 'a', newline='') as csvfile:
             fieldnames = ['Epoch', 'Train Loss', 'Val Loss', 'Train MAE', 'Val MAE',
                           'Train Spearman', 'Val Spearman', 'Train R-squared', 'Val R-squared']
@@ -222,9 +222,9 @@ def main():
     long_term_tcxts_num_embeddings = [2, 2]  # The number of categories in each temporal context in the long-term mode
     long_term_tcxts_embedding_dims = [2, 2]  # The embedding dimension of each temporal context of the long-term features
 
-    meta_csv_file = r'G:\video dataset\meta features\最终metafeature.csv'
-    content_features_path = r'G:\bilibili video dataset\static feature(无desc增强)'
-    temporal_file_path = r'G:\video dataset\cleaned temporal features\processed_temporal_data.csv'
+    meta_csv_file = r'...\metadata.csv'
+    content_features_path = r'...\content features'
+    temporal_file_path = r'...\popularity_time_series_data.csv'
 
     dataset = BilibiliDataset(meta_csv_file, content_features_path, temporal_file_path)
 
@@ -232,7 +232,7 @@ def main():
     print('Using device:', device)
 
     metrics = ['Fold', 'Test Loss', 'Test MAE', 'Test Spearman', 'Test R-squared']
-    results_path = r'C:\Users\Administrator\Desktop\program\视频流行度预测模型\使用ln计算标签\超参数实验\TIML\train_result\test_result_TIML.csv'
+    results_path = r'...\TIML\train_result\test_result_TIML.csv'
     if not os.path.exists(results_path):
         with open(results_path, 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=metrics)
@@ -275,7 +275,7 @@ def main():
         train(model, train_dataloader, val_dataloader, criterion, optimizer, device, epochs=50, patience=50, fold=fold)
 
         # Evaluate the model on the test set
-        model.load_state_dict(torch.load(f'E:\\超参数实验checkpoint\\model_{fold}.pth'))
+        model.load_state_dict(torch.load(f'...\\model_{fold}.pth'))
         model.eval()
         test_outputs = []
         test_targets = []
