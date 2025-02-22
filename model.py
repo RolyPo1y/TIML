@@ -23,9 +23,9 @@ class VisualEncoder(nn.Module):
         return x
 
 
-class AudioEncoder(nn.Module):
+class AcousticEncoder(nn.Module):
     def __init__(self, input_dim=2688):
-        super(AudioEncoder, self).__init__()
+        super(AcousticEncoder, self).__init__()
         self.fc1 = nn.Linear(in_features=input_dim, out_features=1024, bias=True)
         self.fc2 = nn.Linear(in_features=1024, out_features=512, bias=True)
         self.fc3 = nn.Linear(in_features=512, out_features=32, bias=True)
@@ -44,9 +44,9 @@ class AudioEncoder(nn.Module):
         return x
 
 
-class TextEncoder(nn.Module):
+class TextualEncoder(nn.Module):
     def __init__(self, input_dim=1538):
-        super(TextEncoder, self).__init__()
+        super(TextualEncoder, self).__init__()
         self.fc1 = nn.Linear(in_features=input_dim, out_features=1024, bias=True)
         self.fc2 = nn.Linear(in_features=1024, out_features=512, bias=True)
         self.fc3 = nn.Linear(in_features=512, out_features=32, bias=True)
@@ -334,10 +334,10 @@ class TIML(nn.Module):
 
         # Initialize all encoders
         self.attention_hidden_dim = attention_hidden_dim
-        self.text_input_dim = 1538
+        self.textual_input_dim = 1538
         self.visual_encoder = VisualEncoder()
-        self.audio_encoder = AudioEncoder()
-        self.text_encoder = TextEncoder(self.text_input_dim)
+        self.acoustic_encoder = AcousticEncoder()
+        self.textual_encoder = TextualEncoder(self.textual_input_dim)
         self.metadata_encoder = MetadataEncoder(metadata_emb_sizes)
         self.social_encoder = SocialEncoder(social_emb_sizes)
         self.temporal_encoder = HPSFE(
@@ -358,8 +358,8 @@ class TIML(nn.Module):
     def forward(self, visual_input, acoustic_input, textual_input, metadata_input, social_input,
                 short_time_features, long_time_features, t_p):
         visual_features = self.visual_encoder(visual_input)
-        acoustic_features = self.audio_encoder(acoustic_input)
-        textual_features = self.text_encoder(textual_input)
+        acoustic_features = self.acoustic_encoder(acoustic_input)
+        textual_features = self.textual_encoder(textual_input)
         metadata_features = self.metadata_encoder(metadata_input)
         social_features = self.social_encoder(social_input)
         temporal_features = self.temporal_encoder(short_time_features, long_time_features)
