@@ -273,9 +273,9 @@ class TFS(nn.Module):
         self.feature_dim = 32  # The dimension of each feature
         # Temporal contexts embedding
         self.time_embedding = nn.ModuleList([
-            nn.Embedding(2, 2),  # is_day_before_holiday.{j}
-            nn.Embedding(2, 2),  # is_holiday.{j}
-            nn.Embedding(110, 11)  # days_after_upload.{j}
+            nn.Embedding(2, 2),  # HDE
+            nn.Embedding(2, 2),  # HLD
+            nn.Embedding(110, 11)  # PBD
         ])
 
         self.w_z = nn.Linear(self.feature_dim, attention_hidden_dim, bias=False)
