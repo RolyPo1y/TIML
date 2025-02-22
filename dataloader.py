@@ -6,7 +6,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 
 
-class VideoDataset(Dataset):
+class TemporalProc(Dataset):
     def __init__(self, file_path):
         self.data = pd.read_csv(file_path)
         self.time_indices = list(range(4, 76))
@@ -74,8 +74,15 @@ class VideoDataset(Dataset):
 
     def process_temporal_data(self, bvid):
         """
-        Extract the long and short term popularity series and temporal contexts
-        of 72 time points in the past six days
+        Desc:
+            Extract the short-term and long-term popularity time series, as well as the temporal contexts,
+            of the past six days.
+
+            time_popularity_score: the popularity change every two hours (short-term pattern)
+            day_popularity_score: the popularity change per day (long-term pattern)
+            is_day_before_holiday：Holiday eve (HDE)
+            is_holiday: Holiday (HLD)
+            time_zone: Time zone (TMZ)
         """
         print(f"Processing video with bvid: {bvid}")
         video_data = self.data[self.data['bvid'] == bvid]
@@ -204,7 +211,7 @@ class BilibiliDataset(Dataset):
         self.temporal_data = pd.read_csv(temporal_file_path)
         self.temporal_bvid_to_idx = {bvid: idx for idx, bvid in enumerate(self.temporal_data['bvid'].unique())}
 
-        self.temporal_dataset = VideoDataset(temporal_file_path)
+        self.temporal_dataset = TemporalProc(temporal_file_path)
 
     def __len__(self):
         return len(self.meta_data)
