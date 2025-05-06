@@ -1,5 +1,5 @@
 # TIML
-An implementation for our paper: Temporal Information-aware Multimodal Learning Network for User-generated Videos Popularity Prediction
+An implementation for our paper: Temporal Information-aware Multimodal Learning Network for User-generated Video Popularity Prediction
 
 ## 1. Environment
 - Pytorch: 1.12.1
