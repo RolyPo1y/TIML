@@ -144,7 +144,7 @@ def train(model, train_dataloader, val_dataloader, criterion, optimizer, device,
         # plot_results(train_spearmans, val_spearmans, 'Spearman', save_path=None)
         # plot_results(train_r_squares, val_r_squares, 'R-Square', save_path=None)
 
-        # 记录并保存训练过程中的指标
+        # Record and save the metrics during the training process
         results_path = f'...\\TIML\\train_result\\training_results_{fold}.csv'
         with open(results_path, 'a', newline='') as csvfile:
             fieldnames = ['Epoch', 'Train Loss', 'Val Loss', 'Train MAE', 'Val MAE',
